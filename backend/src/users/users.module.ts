@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserListService } from './user-list/user-list.service';
 import { UserListController } from './user-list/user-list.controller';
-import { DatabaseModule } from 'src/database/database.module';
+import { DatabaseModule } from '@src/database/database.module';
 import { UserFindService } from './user-find/user-find.service';
 
 @Module({
