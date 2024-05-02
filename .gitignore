@@ -61,3 +61,4 @@ proyectoGrupo.db-journal
 
 .env
 
+frontend/yarn.lock
