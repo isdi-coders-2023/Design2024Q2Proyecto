@@ -10,6 +10,14 @@ async function main() {
             email: 'alice@prisma.io',
             name: 'Alice',
             password: 'IamAlice',
+            surname: 'Smith',
+            documentId: '75533442Q',
+            birthday: new Date('12/10/2012'),
+            phoneNumber: '+44625021454',
+            address: 'pink road, 45',
+            city: 'London',
+            postalCode: '08014',
+            iban: 'ES6301880528345815513946',
         },
     });
 
@@ -20,6 +28,14 @@ async function main() {
             email: 'bob@prisma.io',
             name: 'Bob',
             password: 'IamBob',
+            surname: 'Dylan',
+            documentId: '53335928D',
+            birthday: new Date('12/10/2012'),
+            phoneNumber: '+44625021454',
+            address: 'pink road, 45',
+            city: 'London',
+            postalCode: '08015',
+            iban: 'ES0200197220964581614246',
         },
     });
 }

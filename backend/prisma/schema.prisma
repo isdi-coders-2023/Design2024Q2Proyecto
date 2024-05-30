@@ -8,8 +8,18 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String?
+ id            Int     @id @default(autoincrement())
+  email         String  @unique
+  name          String
+  password      String
+  surname       String
+  documentId    String  @unique
+  birthday      DateTime
+  phoneNumber   String
+  address       String
+  city          String
+  postalCode    String
+  iban          String
+  occupationTarget  String?
+  employeePosition  String?
 }
