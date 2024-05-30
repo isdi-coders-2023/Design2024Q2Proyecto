@@ -24,5 +24,9 @@
     "frontend/**/*.{ts,js,json}": [
       "cd frontend && npm run lint-staged"
     ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2"
   }
 }
