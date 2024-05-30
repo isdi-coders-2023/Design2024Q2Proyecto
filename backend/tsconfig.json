@@ -22,6 +22,6 @@
             "@test/*": ["./test/*"]
         }
     },
-    "include": ["src", "test", "prisma"],
+    "include": ["src", "test", "prisma", "jest.config.ts", "cucumber.js"],
     "exclude": ["node_modules", "dist"]
 }
