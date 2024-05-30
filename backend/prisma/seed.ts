@@ -18,8 +18,6 @@ async function main() {
             city: 'London',
             postalCode: '08014',
             iban: 'ES6301880528345815513946',
-            occupationTarget: null,
-            employeePosition: null,
         },
     });
 
