@@ -4,13 +4,13 @@ import { PrismaService } from '@src/database/prisma-service/prisma-service.servi
 
 @Injectable()
 export class UserFindService {
-  constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) {}
 
-  async user(
-    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
-    });
-  }
+    async user(
+        userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    ): Promise<User | null> {
+        return this.prisma.user.findUnique({
+            where: userWhereUniqueInput,
+        });
+    }
 }

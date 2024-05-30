@@ -5,10 +5,10 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller()
 @ApiTags('Global')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+    constructor(private readonly appService: AppService) {}
 
-  @Get('/isAlive')
-  isAlive(): string {
-    return this.appService.isAlive();
-  }
+    @Get('/isAlive')
+    isAlive(): string {
+        return this.appService.isAlive();
+    }
 }
