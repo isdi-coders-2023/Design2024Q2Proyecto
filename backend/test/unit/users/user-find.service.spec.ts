@@ -1,67 +1,59 @@
 import { UserFindService } from '@src/users/user-find/user-find.service';
-import { prismaMock } from '../shared/persistence/singleton';
+import { mockUsers } from './user-mocks';
+import { Test, TestingModule } from '@nestjs/testing';
+import {
+    User,
+    UserRepository,
+} from '@src/users/infrastructure/user.repository';
 
-const mockUsers = [
-    {
-        id: 1,
-        email: 'alice@prisma.io',
-        name: 'Alice',
-        password: 'IamAlice',
-    },
-    {
-        id: 2,
-        email: 'bob@prisma.io',
-        name: 'Bob',
-        password: 'IamBob',
-    },
-    {
-        id: 3,
-        email: 'jhon@prisma.io',
-        name: 'Jhon',
-        password: 'IamJhon',
-    },
-];
-
+const userRepoMock: jest.Mocked<UserRepository> = {
+    find: jest.fn(),
+    findMany: jest.fn(),
+};
 describe('UserListService', () => {
     let service: UserFindService;
+    const findSpy = jest.spyOn(userRepoMock, 'find');
+
     beforeEach(async () => {
-        service = new UserFindService(prismaMock);
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [
+                {
+                    provide: UserFindService,
+                    useFactory: (repository: UserRepository) =>
+                        new UserFindService(repository),
+                    inject: ['UserRepository'],
+                },
+                {
+                    provide: 'UserRepository',
+                    useValue: userRepoMock,
+                },
+            ],
+        }).compile();
+        service = module.get<UserFindService>(UserFindService);
     });
 
     describe('getUsers', () => {
         it('should return user from the service', async () => {
-            prismaMock.user.findUnique.mockResolvedValue({
-                id: 1,
-                email: 'alice@prisma.io',
-                name: 'Alice',
-                password: 'IamAlice',
-            });
+            const mockUser = mockUsers[0] as User;
+            findSpy.mockReturnValue(Promise.resolve(mockUser));
 
-            await expect(
-                service.user({ email: 'alice@prisma.io' }),
-            ).resolves.toStrictEqual(mockUsers[0]);
-            expect(prismaMock.user.findUnique).toHaveBeenCalledTimes(1);
-            expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
-                where: { email: 'alice@prisma.io' },
-            });
+            const result = await service.user({ email: 'alice@prisma.io' });
+            expect(result).toStrictEqual(mockUser);
+
+            expect(findSpy).toHaveBeenCalledTimes(1);
+            expect(findSpy).toHaveBeenCalledWith({ email: 'alice@prisma.io' });
         });
 
-        it('should return null if we dont find users function parameters', async () => {
-            prismaMock.user.findUnique.mockResolvedValue(null);
+        it('should throw now found if we dont find users', async () => {
+            findSpy.mockReturnValue(Promise.resolve(null));
 
-            await expect(
-                service.user({ email: 'not-found@prisma.io' }),
-            ).resolves.toStrictEqual(null);
-            expect(prismaMock.user.findUnique).toHaveBeenCalledTimes(1);
-            expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
-                where: { email: 'not-found@prisma.io' },
-            });
+            await expect(service.user({ id: 10 })).rejects.toThrow(
+                'User not found',
+            );
         });
 
         it('should throw an error from the service', async () => {
-            prismaMock.user.findUnique.mockRejectedValue(
-                new Error('Database error'),
-            );
+            findSpy.mockRejectedValue(new Error('Database error'));
 
             await expect(service.user({ id: undefined })).rejects.toThrow(
                 Error,
