@@ -8,11 +8,11 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiBearerAuth()
 @ApiTags('User')
 export class UserListController {
-  constructor(private readonly userListService: UserListService) {}
+    constructor(private readonly userListService: UserListService) {}
 
-  @Get('/')
-  @UseGuards(AuthGuard)
-  async getUsers(): Promise<User[]> {
-    return this.userListService.users({});
-  }
+    @Get('/')
+    @UseGuards(AuthGuard)
+    async getUsers(): Promise<User[]> {
+        return this.userListService.users({});
+    }
 }

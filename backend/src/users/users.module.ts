@@ -5,9 +5,9 @@ import { DatabaseModule } from '@src/database/database.module';
 import { UserFindService } from './user-find/user-find.service';
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [UserListService, UserFindService],
-  controllers: [UserListController],
-  exports: [UserListService, UserFindService],
+    imports: [DatabaseModule],
+    providers: [UserListService, UserFindService],
+    controllers: [UserListController],
+    exports: [UserListService, UserFindService],
 })
 export class UsersModule {}
