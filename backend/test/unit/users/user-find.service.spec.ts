@@ -30,7 +30,12 @@ describe('UserListService', () => {
 
     describe('getUsers', () => {
         it('should return user from the service', async () => {
-            prismaMock.user.findUnique.mockResolvedValue(mockUsers[0]);
+            prismaMock.user.findUnique.mockResolvedValue({
+                id: 1,
+                email: 'alice@prisma.io',
+                name: 'Alice',
+                password: 'IamAlice',
+            });
 
             await expect(
                 service.user({ email: 'alice@prisma.io' }),
