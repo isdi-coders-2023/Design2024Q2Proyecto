@@ -1,0 +1,29 @@
+{
+  "name": "design2024q2proyecto",
+  "version": "1.0.0",
+  "description": "Repositorio del proyecto del curso de Diseño Q2 - ISDI",
+  "main": "backend/dist/src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isdi-coders-2023/Design2024Q2Proyecto.git"
+  },
+  "author": "ISDI",
+  "license": "ISC",
+  "types": "./backend/dist/src/main.d.ts",
+  "bugs": {
+    "url": "https://github.com/isdi-coders-2023/Design2024Q2Proyecto/issues"
+  },
+  "homepage": "https://github.com/isdi-coders-2023/Design2024Q2Proyecto#readme",
+  "lint-staged": {
+    "backend/**/*.{ts,js,json}": [
+      "cd api && npm run lint-staged"
+    ],
+    "frontend/**/*.{ts,js,json}": [
+      "cd webapp && npm run lint-staged"
+    ]
+  }
+}
