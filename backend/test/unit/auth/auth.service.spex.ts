@@ -4,12 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from '@src/auth/auth.service';
 import { AuthDto } from '@src/auth/dto/auth.dto';
 import { UserFindService } from '@src/users/user-find/user-find.service';
-const mockUser = {
-    id: 1,
-    email: 'alice@prisma.io',
-    name: 'Alice',
-    password: 'IamAlice',
-};
+import { mockUsers } from '../users/user-mocks';
+import { User } from '@src/users/infrastructure/user.repository';
+const mockUser = mockUsers[0] as User;
 
 const mockAuthDto: AuthDto = {
     username: 'alice@prisma.io',
@@ -28,7 +25,7 @@ describe('UserListService', () => {
 
     describe('AuthService', () => {
         it('should return access_token', async () => {
-            userFindService.user.mockResolvedValue(Promise.resolve(mockUser));
+            userFindService.user.mockResolvedValue(mockUser);
             jwtService.signAsync.mockResolvedValue(
                 Promise.resolve('some-token'),
             );

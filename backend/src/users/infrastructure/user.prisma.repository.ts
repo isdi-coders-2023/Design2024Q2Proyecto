@@ -5,7 +5,7 @@ export class UserPrismaRepository implements UserRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async find(where: FindUserWhere): Promise<User | null> {
-        const prismaWhere: Prisma.UserWhereUniqueInput = where;
+        const prismaWhere = where as Prisma.UserWhereUniqueInput;
 
         const result = await this.prisma.user.findUnique({
             where: prismaWhere,
