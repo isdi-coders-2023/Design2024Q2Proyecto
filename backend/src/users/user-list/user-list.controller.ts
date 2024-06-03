@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { UserListService } from './user-list.service';
 import { AuthGuard } from '@src/auth/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { User } from '../infrastructure/user.repository';
 
 @Controller('user')
 @ApiBearerAuth()

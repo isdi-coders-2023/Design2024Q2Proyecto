@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
-import { PrismaService } from '@src/database/prisma-service/prisma-service.service';
+import {
+    UserRepository,
+    User,
+    FindUserWhere,
+} from '../infrastructure/user.repository';
 
 @Injectable()
 export class UserFindService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private repository: UserRepository) {}
 
-    async user(
-        userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-    ): Promise<User | null> {
-        return this.prisma.user.findUnique({
-            where: userWhereUniqueInput,
-        });
+    async user(where: FindUserWhere): Promise<User | null> {
+        const user = await this.repository.find(where);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return user;
     }
 }

@@ -1,58 +1,52 @@
-import { UserListService } from '../../../src/users/user-list/user-list.service';
-import { prismaMock } from '../shared/persistence/singleton';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UserRepository } from '@src/users/infrastructure/user.repository';
+import { UserListService } from '@src/users/user-list/user-list.service';
+import { mockUsers } from './user-mocks';
 
-const mockUsers = [
-    {
-        id: 1,
-        email: 'alice@prisma.io',
-        name: 'Alice',
-        password: 'IamAlice',
-    },
-    {
-        id: 2,
-        email: 'bob@prisma.io',
-        name: 'Bob',
-        password: 'IamBob',
-    },
-    {
-        id: 3,
-        email: 'jhon@prisma.io',
-        name: 'Jhon',
-        password: 'IamJhon',
-    },
-];
-
+const userRepoMock: jest.Mocked<UserRepository> = {
+    find: jest.fn(),
+    findMany: jest.fn(),
+};
 describe('UserListService', () => {
     let service: UserListService;
-    beforeEach(async () => {
-        service = new UserListService(prismaMock);
-    });
+    const listSpy = jest.spyOn(userRepoMock, 'findMany');
 
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [
+                {
+                    provide: UserListService,
+                    useFactory: (repository: UserRepository) =>
+                        new UserListService(repository),
+                    inject: ['UserRepository'],
+                },
+                {
+                    provide: 'UserRepository',
+                    useValue: userRepoMock,
+                },
+            ],
+        }).compile();
+        service = module.get<UserListService>(UserListService);
+    });
     describe('getUsers', () => {
         it('should return users from the service', async () => {
-            prismaMock.user.findMany.mockResolvedValue(mockUsers);
-
-            await expect(service.users({})).resolves.toStrictEqual(mockUsers);
-            expect(prismaMock.user.findMany).toHaveBeenCalledTimes(1);
-            expect(prismaMock.user.findMany).toHaveBeenCalledWith({});
+            listSpy.mockReturnValue(Promise.resolve(mockUsers));
+            const result = await service.users({});
+            expect(result).toStrictEqual(mockUsers);
+            expect(listSpy).toHaveBeenCalledTimes(1);
+            expect(listSpy).toHaveBeenCalledWith(undefined, undefined);
         });
 
         it('should handle function parameters', async () => {
-            prismaMock.user.findMany.mockResolvedValue(mockUsers.slice(0, 1));
+            listSpy.mockReturnValue(Promise.resolve(mockUsers.slice(0, 1)));
 
-            await expect(
-                service.users({ skip: 0, take: 1 }),
-            ).resolves.toStrictEqual([mockUsers[0]]);
-            expect(prismaMock.user.findMany).toHaveBeenCalledWith({
-                skip: 0,
-                take: 1,
-            });
+            const result = await service.users({ skip: 0, take: 1 });
+            expect(result).toStrictEqual([mockUsers[0]]);
+            expect(listSpy).toHaveBeenCalledWith(1, 0);
         });
 
         it('should throw an error from the service', async () => {
-            prismaMock.user.findMany.mockRejectedValue(
-                new Error('Database error'),
-            );
+            listSpy.mockRejectedValue(new Error('Database error'));
 
             await expect(service.users).rejects.toThrow(Error);
         });

@@ -1,53 +1,53 @@
 {
-  "files.eol": "\n",
-  "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.fixAll.eslint": "explicit"
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "eslint.enable": true,
-  "eslint.workingDirectories": ["./frontend", "./backend"],
-  "[javascript]": {
+    "files.eol": "\n",
+    "editor.tabSize": 2,
     "editor.formatOnSave": true,
-    "files.trimFinalNewlines": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[javascriptreact]": {
-    "editor.formatOnSave": true,
-    "files.trimFinalNewlines": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[typescript]": {
-    "editor.formatOnSave": true,
-    "files.trimFinalNewlines": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[typescriptreact]": {
-    "editor.formatOnSave": true,
-    "files.trimFinalNewlines": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "cucumber.glue": [
-    "test/**/*.ts",
-    "features/**/*.js",
-    "features/**/*.jsx",
-    "features/**/*.ts",
-    "features/**/*.tsx",
-    "features/**/*.php",
-    "features/**/*.py",
-    "tests/**/*.py",
-    "tests/**/*.rs",
-    "features/**/*.rs",
-    "features/**/*.rb",
-    "*specs*/**/*.cs"
-  ],
-  "cucumber.features": [
-    "src/test/**/*.feature",
-    "features/**/*.feature",
-    "tests/**/*.feature",
-    "*specs*/**/*.feature"
-  ],
-  "cucumberautocomplete.steps": ["./backend/test/**/*.steps.ts"]
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "eslint.enable": true,
+    "eslint.workingDirectories": ["./frontend", "./backend"],
+    "[javascript]": {
+        "editor.formatOnSave": true,
+        "files.trimFinalNewlines": true,
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[javascriptreact]": {
+        "editor.formatOnSave": true,
+        "files.trimFinalNewlines": true,
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescript]": {
+        "editor.formatOnSave": true,
+        "files.trimFinalNewlines": true,
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescriptreact]": {
+        "editor.formatOnSave": true,
+        "files.trimFinalNewlines": true,
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "cucumber.glue": [
+        "test/**/*.ts",
+        "features/**/*.js",
+        "features/**/*.jsx",
+        "features/**/*.ts",
+        "features/**/*.tsx",
+        "features/**/*.php",
+        "features/**/*.py",
+        "tests/**/*.py",
+        "tests/**/*.rs",
+        "features/**/*.rs",
+        "features/**/*.rb",
+        "*specs*/**/*.cs"
+    ],
+    "cucumber.features": [
+        "src/test/**/*.feature",
+        "features/**/*.feature",
+        "tests/**/*.feature",
+        "*specs*/**/*.feature"
+    ],
+    "cucumberautocomplete.steps": ["./backend/test/**/*.steps.ts"]
 }
