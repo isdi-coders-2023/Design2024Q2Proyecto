@@ -5,11 +5,8 @@ import {
     User,
     UserRepository,
 } from '@src/users/infrastructure/user.repository';
+import { userRepoMock } from './user.repository.mock';
 
-const userRepoMock: jest.Mocked<UserRepository> = {
-    find: jest.fn(),
-    findMany: jest.fn(),
-};
 describe('UserListService', () => {
     let service: UserFindService;
     const findSpy = jest.spyOn(userRepoMock, 'find');

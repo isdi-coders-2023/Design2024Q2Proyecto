@@ -2,11 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '@src/users/infrastructure/user.repository';
 import { UserListService } from '@src/users/user-list/user-list.service';
 import { mockUsers } from './user-mocks';
+import { userRepoMock } from './user.repository.mock';
 
-const userRepoMock: jest.Mocked<UserRepository> = {
-    find: jest.fn(),
-    findMany: jest.fn(),
-};
 describe('UserListService', () => {
     let service: UserListService;
     const listSpy = jest.spyOn(userRepoMock, 'findMany');
