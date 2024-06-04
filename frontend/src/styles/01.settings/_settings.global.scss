@@ -1,0 +1,71 @@
+@use 'sass:math';
+@import '../02.tools/tools.functions';
+
+// SETTINGS
+
+// Color Variables
+
+$co-primary: #233c57;
+$co-secondary: #29a7b1;
+
+$co-white: white;
+$co-darkWhite: #e5e7eb;
+$co-danger: #ff0000;
+$co-lightRed: #ffeeee;
+$co-border: #d1d5db;
+$co-lightGray: #f3f4f6;
+$co-mediumGray: #6b7280;
+$co-darkBlue: #1f2a37;
+
+$co-disabledText: #9ca3af;
+$co-darkText: #111928;
+$co-lightText: #4b5563;
+
+$co-green: #00821d;
+$co-lightGreen: #f7fdfb;
+
+// FONTS
+
+// HTML font-size
+$fs-root: 16px;
+
+// Font Family old
+$ff-primary: 'Montserrat', 'Arial', sans-serif;
+$ff-secondary: 'Syncopate', 'Arial', sans-serif;
+
+// Font Size
+
+// Font Weight
+$fw-extraLight: 100;
+$fw-light: 300;
+$fw-regular: 400;
+$fw-bold: 700;
+
+// z-index
+$zi-level: (
+    modal: 100,
+    // Modals appear on top of everything
+    menu: 10,
+    // The header+menu is the second priority, only modals get over it
+    fader: 1,
+    // The fader itself is above regular content
+    negative: -1,
+);
+
+//LAYOUT SIZES
+$s: 0;
+$sm: 360px;
+$md: 834px;
+$lg: 1440px;
+
+// GRID BREAKPOINTS
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+$grid-breakpoints: (
+    s: $s,
+    sm: $sm,
+    md: $md,
+    lg: $lg,
+) !default;
+
+// MISC VARS

@@ -1,0 +1,43 @@
+// MIXINS
+
+// Utility mixins and functions for evaluating source code across our variables, maps, and mixins.
+
+@include _assert-ascending($grid-breakpoints, '$grid-breakpoints');
+@include _assert-starts-at-zero($grid-breakpoints, '$grid-breakpoints');
+
+/* FONTS */
+
+@mixin font(
+    $ff: false,
+    $fs: false,
+    $fw: false,
+    $fst: false,
+    $lh: false,
+    $co: false,
+    $ls: false,
+    $lsC: false
+) {
+    @if $ff {
+        font-family: $ff;
+    }
+    @if $fs {
+        font-size: $fs;
+    }
+    @if $fw {
+        font-weight: $fw;
+    }
+    @if $fst {
+        font-style: $fst;
+    }
+    @if $lh {
+        line-height: $lh;
+    }
+    @if $co {
+        color: $co;
+    }
+    @if $ls {
+        letter-spacing: $ls;
+    }
+}
+
+/* END FONTS */
