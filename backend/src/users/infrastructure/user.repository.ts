@@ -24,4 +24,5 @@ export type FindUserWhere = {
 export interface UserRepository {
     find(where: FindUserWhere): Promise<User | null>;
     findMany(limit?: number, offset?: number): Promise<User[]>;
+    save(user: User): Promise<void>;
 }

@@ -1,4 +1,6 @@
-export const mockUsers = [
+import { User } from '@src/users/infrastructure/user.repository';
+
+export const mockUsers: User[] = [
     {
         id: 1,
         email: 'alice@prisma.io',

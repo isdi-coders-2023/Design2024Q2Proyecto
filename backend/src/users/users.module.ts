@@ -6,6 +6,8 @@ import { UserFindService } from './user-find/user-find.service';
 import { UserRepository } from './infrastructure/user.repository';
 import { UserPrismaRepository } from './infrastructure/user.prisma.repository';
 import { PrismaService } from '@src/database/prisma-service/prisma-service.service';
+import { UsersController } from './users.controller';
+import { UserService } from './user.service';
 
 @Module({
     imports: [DatabaseModule],
@@ -23,6 +25,12 @@ import { PrismaService } from '@src/database/prisma-service/prisma-service.servi
             inject: ['UserRepository'],
         },
         {
+            provide: UserService,
+            useFactory: (repository: UserRepository) =>
+                new UserService(repository),
+            inject: ['UserRepository'],
+        },
+        {
             provide: 'UserRepository',
             useExisting: UserPrismaRepository,
         },
@@ -33,7 +41,7 @@ import { PrismaService } from '@src/database/prisma-service/prisma-service.servi
             inject: [PrismaService],
         },
     ],
-    controllers: [UserListController],
+    controllers: [UserListController, UsersController],
     exports: [UserListService, UserFindService],
 })
 export class UsersModule {}

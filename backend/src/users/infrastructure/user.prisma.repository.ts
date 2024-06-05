@@ -26,4 +26,8 @@ export class UserPrismaRepository implements UserRepository {
 
         return result as User[];
     }
+
+    async save(user: User): Promise<void> {
+        await this.prisma.user.create({ data: user });
+    }
 }
