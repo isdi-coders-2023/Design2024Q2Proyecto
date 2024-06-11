@@ -4,6 +4,7 @@ import { AppModule } from '@src/app.module';
 import { World } from './World';
 import { UserInMemoryRepository } from './user/user.inmemory.repository';
 import { PrismaService } from '@src/database/prisma-service/prisma-service.service';
+import { UserPrismaRepository } from '@src/users/infrastructure/user.prisma.repository';
 
 Before({ timeout: 10 * 1000 }, async function (this: World) {
     const moduleFixture = await Test.createTestingModule({
@@ -11,6 +12,8 @@ Before({ timeout: 10 * 1000 }, async function (this: World) {
     })
         .overrideProvider('UserRepository')
         .useClass(UserInMemoryRepository)
+        .overrideProvider(UserPrismaRepository)
+        .useValue(null)
         .overrideProvider(PrismaService)
         .useValue(null)
         .compile();
