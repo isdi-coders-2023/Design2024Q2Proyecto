@@ -1,9 +1,9 @@
 import { After, Before } from '@cucumber/cucumber';
 import { Test } from '@nestjs/testing';
-import { PrismaClient } from '@prisma/client';
 import { AppModule } from '@src/app.module';
 import { World } from './World';
 import { UserInMemoryRepository } from './user/user.inmemory.repository';
+import { PrismaService } from '@src/database/prisma-service/prisma-service.service';
 
 Before({ timeout: 10 * 1000 }, async function (this: World) {
     const moduleFixture = await Test.createTestingModule({
@@ -11,7 +11,7 @@ Before({ timeout: 10 * 1000 }, async function (this: World) {
     })
         .overrideProvider('UserRepository')
         .useClass(UserInMemoryRepository)
-        .overrideProvider(PrismaClient)
+        .overrideProvider(PrismaService)
         .useValue(null)
         .compile();
 

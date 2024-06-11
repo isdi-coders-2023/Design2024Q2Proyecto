@@ -1,4 +1,12 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Post,
+    HttpCode,
+    HttpStatus,
+    UsePipes,
+    ValidationPipe,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
     ApiOkResponse,
@@ -23,6 +31,7 @@ export class AuthController {
     @ApiUnauthorizedResponse({
         description: 'Unauthorized user',
     })
+    @UsePipes(new ValidationPipe())
     signIn(@Body() signInDto: AuthDto) {
         return this.authService.signIn(signInDto.username, signInDto.password);
     }
