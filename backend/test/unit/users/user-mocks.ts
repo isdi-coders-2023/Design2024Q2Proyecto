@@ -1,4 +1,6 @@
-export const mockUsers = [
+import { UserRequest } from '@src/users/users.controller';
+
+export const mockUsers: UserRequest[] = [
     {
         id: 1,
         email: 'alice@prisma.io',

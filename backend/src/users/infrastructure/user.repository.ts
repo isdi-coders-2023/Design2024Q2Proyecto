@@ -1,19 +1,4 @@
-export type User = {
-    [x: string]: any;
-    email: string;
-    name: string;
-    password: string;
-    surname: string;
-    documentId: string;
-    birthday: Date | string;
-    phoneNumber: string;
-    address: string;
-    city: string;
-    postalCode: string;
-    iban: string;
-    occupationTarget?: string | null;
-    employeePosition?: string | null;
-};
+import { UserDto } from '../user.dto';
 
 export type FindUserWhere = {
     id?: number;
@@ -22,6 +7,7 @@ export type FindUserWhere = {
 };
 
 export interface UserRepository {
-    find(where: FindUserWhere): Promise<User | null>;
-    findMany(limit?: number, offset?: number): Promise<User[]>;
+    find(where: FindUserWhere): Promise<UserDto | null>;
+    findMany(limit?: number, offset?: number): Promise<UserDto[]>;
+    save(user: UserDto): Promise<void>;
 }

@@ -16,7 +16,7 @@ async function main() {
             phoneNumber: '+44625021454',
             address: 'pink road, 45',
             city: 'London',
-            postalCode: '08014',
+            cp: '08014',
             iban: 'ES6301880528345815513946',
         },
     });
@@ -34,7 +34,7 @@ async function main() {
             phoneNumber: '+44625021454',
             address: 'pink road, 45',
             city: 'London',
-            postalCode: '08015',
+            cp: '08015',
             iban: 'ES0200197220964581614246',
         },
     });

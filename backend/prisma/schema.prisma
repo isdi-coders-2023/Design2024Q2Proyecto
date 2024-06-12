@@ -18,7 +18,7 @@ model User {
   phoneNumber   String
   address       String
   city          String
-  postalCode    String
+  cp            String
   iban          String
   occupationTarget  String?
   employeePosition  String?
