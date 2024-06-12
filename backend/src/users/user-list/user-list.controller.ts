@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { UserListService } from './user-list.service';
-import { AuthGuard } from '@src/auth/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { User } from '../infrastructure/user.repository';
+import { AuthGuard } from '@src/auth/auth.guard';
+import { UserDtoPrimitives } from '../user.dto';
+import { UserListService } from './user-list.service';
 
 @Controller('user')
 @ApiBearerAuth()
@@ -12,7 +12,8 @@ export class UserListController {
 
     @Get('/')
     @UseGuards(AuthGuard)
-    async getUsers(): Promise<User[]> {
-        return this.userListService.users({});
+    async getUsers(): Promise<UserDtoPrimitives[]> {
+        const users = await this.userListService.users({});
+        return users.map((user) => user.toPrimitive());
     }
 }

@@ -6,6 +6,7 @@ import {
     UserRepository,
 } from '@src/users/infrastructure/user.repository';
 import { userRepoMock } from './user.repository.mock';
+import { UserMother } from './user.mother';
 
 describe('UserListService', () => {
     let service: UserFindService;
@@ -31,14 +32,15 @@ describe('UserListService', () => {
 
     describe('getUsers', () => {
         it('should return user from the service', async () => {
-            const mockUser = mockUsers[0] as User;
+            const mockEmail = 'alice@prisma.io';
+            const mockUser = UserMother.random({ email: mockEmail });
             findSpy.mockReturnValue(Promise.resolve(mockUser));
 
-            const result = await service.user({ email: 'alice@prisma.io' });
+            const result = await service.user({ email: mockEmail });
             expect(result).toStrictEqual(mockUser);
 
             expect(findSpy).toHaveBeenCalledTimes(1);
-            expect(findSpy).toHaveBeenCalledWith({ email: 'alice@prisma.io' });
+            expect(findSpy).toHaveBeenCalledWith({ email: mockEmail });
         });
 
         it('should throw now found if we dont find users', async () => {

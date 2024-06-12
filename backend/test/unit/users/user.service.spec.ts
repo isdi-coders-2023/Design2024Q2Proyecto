@@ -1,15 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-    User,
-    UserRepository,
-} from '@src/users/infrastructure/user.repository';
-import { userRepoMock } from './user.repository.mock';
+import { UserRepository } from '@src/users/infrastructure/user.repository';
 import { UserService } from '@src/users/user.service';
-import { mockUsers } from './user-mocks';
+import { UserMother } from './user.mother';
+import { userRepoMock } from './user.repository.mock';
 
 describe('UserListService', () => {
     let service: UserService;
-
+    const spy = jest.spyOn(userRepoMock, 'save');
+    const user = UserMother.random();
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
@@ -29,26 +27,12 @@ describe('UserListService', () => {
     });
     describe('createUser', () => {
         it('Debe retornar void si el usuario se ha creado correctamente', async () => {
-            const user: User = mockUsers.at(-1)!;
             const result = await service.create(user);
             expect(result).toBeUndefined();
+            expect(spy).toHaveBeenCalledTimes(1);
+            expect(spy).toHaveBeenCalledWith(user);
         });
         it('Debe lanzar Error si los campos no son correctos', async () => {
-            const user: User = {
-                email: '',
-                name: '',
-                password: '',
-                surname: '',
-                documentId: '',
-                birthday: '',
-                phoneNumber: '',
-                address: '',
-                city: '',
-                postalCode: '',
-                iban: '',
-                occupationTarget: null,
-                employeePosition: null,
-            };
             await expect(service.create(user)).rejects.toThrow(Error);
         });
     });

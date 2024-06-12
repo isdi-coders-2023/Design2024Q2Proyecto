@@ -1,17 +1,10 @@
-import { User, UserRepository } from './infrastructure/user.repository';
+import { UserRepository } from './infrastructure/user.repository';
+import { UserDto } from './user.dto';
 
 export class UserService {
     constructor(private readonly repository: UserRepository) {}
 
-    UserRules = {
-        id: ['requied'],
-        name: ['requied'],
-    };
-
-    async create(user: User): Promise<void> {
-        if (user.name === '') {
-            throw new Error('El name es obligatorio');
-        }
+    async create(user: UserDto): Promise<void> {
         await this.repository.save(user);
     }
 }
