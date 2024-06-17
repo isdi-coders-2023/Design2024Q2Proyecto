@@ -4,7 +4,7 @@ Rate-me es una aplicación de evaluación de solvencia de ususarios.
 Ofrece varios servicios para recuperar información financiera de personas a partir de su DNI / NIE:
 
 - Validación de documento de identidad a partir de la foto
-- Consulta de datos financieros a partir del número documento de identidad
+- Consulta de datos financieros a partir del número de documento de identidad
 - Rating credicicio de una persona a partir de su documento de identidad
 
 ## Instalación
