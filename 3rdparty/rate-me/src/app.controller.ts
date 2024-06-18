@@ -4,6 +4,7 @@ import { User } from './types/user';
 import { validateUser } from './validation/validateUser';
 import { ValidateDocument } from './validation/validateDocument';
 import { AWSStorage } from './libs/AWSStorage';
+import { AnyToPngConverter } from './libs/AnyToPngConverter';
 
 @Controller()
 export class AppController {
@@ -29,7 +30,8 @@ export class AppController {
 
   @Post('document/validate')
   validateDocumentId(@Body() body: any) {
-    const validator = new ValidateDocument();
+    const pngConverter = new AnyToPngConverter();
+    const validator = new ValidateDocument(pngConverter);
     try {
       validator.validate(body);
       this.safelyStoreNewDocument(body);

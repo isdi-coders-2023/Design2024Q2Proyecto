@@ -1,3 +1,4 @@
+import { AnyToPngConverterTesteable } from '../libs/AnyToPngConverterTesteable';
 import { ValidateDocument } from './validateDocument';
 
 const samplePayload = {
@@ -9,10 +10,17 @@ const samplePayload = {
   backImage: 'another-base64-jpeg',
 };
 
-const sut: ValidateDocument = new ValidateDocument();
+const pngConverter = new AnyToPngConverterTesteable();
+
+const sut: ValidateDocument = new ValidateDocument(pngConverter);
 
 describe('validateDocument', () => {
   describe('when validating post data', () => {
+    it('should validate document', () => {
+      const payload = { ...samplePayload };
+      sut.validate(payload);
+    });
+
     it('should fail if dni is not present', () => {
       const payload = { ...samplePayload };
       delete payload.dni;
@@ -61,19 +69,24 @@ describe('validateDocument', () => {
       }).toThrow('Invalid data received');
     });
 
-    it('should fail if backImage is not present', () => {
-      const payload = { ...samplePayload };
-      delete payload.backImage;
+    it('should evalueate images as fake', () => {
+      const payload = {
+        ...samplePayload,
+        frontImage: 'fake-image',
+        backImage: 'fake-image',
+      };
+
       expect(() => {
         sut.validate(payload);
-      }).toThrow('Invalid data received');
+      }).toThrow('Las imágenes parecen falsas');
     });
 
-    it('should accept valid payload', () => {
-      const payload = { ...samplePayload };
+    it('should fail if some data does not match with payload', () => {
+      const payload = { ...samplePayload, frontImage: 'fake-image-2' };
+
       expect(() => {
         sut.validate(payload);
-      }).toThrow('Invalid AnyToPngConverter license');
+      }).toThrow('Algún dato no casa con el DNI');
     });
   });
 });

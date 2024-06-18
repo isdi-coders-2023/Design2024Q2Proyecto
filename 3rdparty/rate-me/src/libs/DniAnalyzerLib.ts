@@ -8,8 +8,8 @@ export class DniAnalyzerLib {
   private pngConverter: AnyToPngConverter;
   private ocrHelper: OcrAwesomeLib;
 
-  constructor() {
-    this.pngConverter = new AnyToPngConverter();
+  constructor(pngConverter: AnyToPngConverter) {
+    this.pngConverter = pngConverter;
     this.ocrHelper = new OcrAwesomeLib();
   }
 

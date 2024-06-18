@@ -1,9 +1,12 @@
+import { AnyToPngConverter } from '../libs/AnyToPngConverter';
 import { DniAnalyzerLib } from '../libs/DniAnalyzerLib';
 
 export class ValidateDocument {
   private dniAnalyzer: DniAnalyzerLib;
-  constructor() {
-    this.dniAnalyzer = new DniAnalyzerLib();
+  private pngConverter:AnyToPngConverter;
+  constructor(pngConverter: AnyToPngConverter) {
+    this.dniAnalyzer = new DniAnalyzerLib(pngConverter);
+    this.pngConverter = pngConverter;
   }
   //NOTE siempre recibimos las imágenes como jpeg
   public validate(data: any): void {
@@ -55,7 +58,7 @@ export class ValidateDocument {
       if (data.apellidos === dataExtracted.apellidos) {
         if (data.dni === dataExtracted.dni) {
           if (
-            data.fechaDeNacimiento ===
+            data.fechaNacimiento ===
             dataExtracted.fechaDeNacimiento.replaceAll(' ', '-')
           ) {
             return;
