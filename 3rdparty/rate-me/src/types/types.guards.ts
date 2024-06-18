@@ -1,36 +1,37 @@
 import { DocumentDto } from "./document.dto";
 
 export const isValidDocumentDto = (document: any) : document is DocumentDto => {
-
-    let isValid;
-    // validar que viene DNI
-    if ('documentId' in document) {
-      // validar que viene nombre
-      if ('name' in document) {
-        // validar que viene fecha de nacimiento
-        if ('birthday' in document) {
-          if ('surname' in document) {
-            isValid = true;
-          } else {
-            isValid = false;
-          }
-        } else {
-          isValid = false;
-        }
-      } else {
-        isValid = false;
-      }
-    } else {
-      isValid = false;
-    }
-    // validar que viene la imagen, front y back
-    if ((isValid && !('frontImage' in document)) || document.frontImage === '') {
-      isValid = false;
-    }
-    if ((isValid && !('backImage' in document)) || document.backImage === '') {
-      isValid = false;
+    if (!('documentId' in document)) { 
+      return false;
     }
 
-    return isValid;
+    if (!('name' in document)) { 
+      return false;
+    }
 
+    if (!('birthday' in document)) { 
+      return false;
+    }
+
+    if (!('frontImage' in document) || document.frontImage === '') {
+      return false;
+    }
+
+    if (!('backImage' in document) || document.backImage === '') {
+      return  false;
+    }
+
+    if(!('surname' in document)) {
+      return false 
+    }
+
+    if (!('frontImage' in document) || document.frontImage === '') {
+      return false;
+    }
+
+    if (!('backImage' in document) || document.backImage === '') {
+      return  false;
+    }
+
+    return true;
 }
