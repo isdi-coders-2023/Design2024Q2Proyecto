@@ -16,7 +16,7 @@ const sut: ValidateDocument = new ValidateDocument(pngConverter);
 
 describe('validateDocument', () => {
   describe('when validating post data', () => {
-    it.only('should validate document', () => {
+    it('should validate document', () => {
       const payload = { ...samplePayload };
       sut.validate(payload);
     });

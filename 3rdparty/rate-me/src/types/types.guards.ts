@@ -2,14 +2,14 @@ import { DocumentDto } from "./document.dto";
 
 export const isValidDocumentDto = (document: any) : document is DocumentDto => {
 
-    let isValid = false;
+    let isValid;
     // validar que viene DNI
-    if ('dni' in document) {
+    if ('documentId' in document) {
       // validar que viene nombre
-      if ('nombre' in document) {
+      if ('name' in document) {
         // validar que viene fecha de nacimiento
-        if ('fechaNacimiento' in document) {
-          if ('apellidos' in document) {
+        if ('birthday' in document) {
+          if ('surname' in document) {
             isValid = true;
           } else {
             isValid = false;
