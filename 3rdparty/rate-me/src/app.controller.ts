@@ -5,6 +5,8 @@ import { validateUser } from './validation/validateUser';
 import { ValidateDocument } from './validation/validateDocument';
 import { AWSStorage } from './libs/AWSStorage';
 import { AnyToPngConverter } from './libs/AnyToPngConverter';
+import { DniAnalyzerLib } from './libs/DniAnalyzerLib';
+import { ValidateDniImages } from './validation/validateDniImages.service';
 
 @Controller()
 export class AppController {
@@ -31,7 +33,9 @@ export class AppController {
   @Post('document/validate')
   validateDocumentId(@Body() body: any) {
     const pngConverter = new AnyToPngConverter();
-    const validator = new ValidateDocument(pngConverter);
+    const dniAnalyzer = new DniAnalyzerLib(pngConverter);
+    const validateDniImages = new ValidateDniImages(dniAnalyzer);
+    const validator = new ValidateDocument(pngConverter, validateDniImages);
     try {
       validator.validate(body);
       this.safelyStoreNewDocument(body);

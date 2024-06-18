@@ -1,4 +1,6 @@
+import { DniAnalyzerLib } from '../libs/DniAnalyzerLib';
 import { AnyToPngConverterTesteable } from '../libs/AnyToPngConverterTesteable';
+import { ValidateDniImages } from './validateDniImages.service';
 import { ValidateDocument } from './validateDocument';
 
 const samplePayload = {
@@ -11,8 +13,13 @@ const samplePayload = {
 };
 
 const pngConverter = new AnyToPngConverterTesteable();
+const dniAnalyzer = new DniAnalyzerLib(pngConverter);
+const validateDniImages = new ValidateDniImages(dniAnalyzer);
 
-const sut: ValidateDocument = new ValidateDocument(pngConverter);
+const sut: ValidateDocument = new ValidateDocument(
+  pngConverter,
+  validateDniImages,
+);
 
 describe('validateDocument', () => {
   describe('when validating post data', () => {
