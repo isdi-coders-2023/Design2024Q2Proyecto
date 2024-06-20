@@ -1,9 +1,13 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { User } from './types/user';
-import { validateUser } from './validation/validateUser';
-import { ValidateDocument } from './validation/validateDocument';
 import { AWSStorage } from './libs/AWSStorage';
+import { AnyToPngConverter } from './libs/AnyToPngConverter';
+import { DniAnalyzerLib } from './libs/DniAnalyzerLib';
+import { User } from './types/user';
+import { DocumentIdContentExtractorOcrAwesome } from './validation/infrastructure/DocumentIdContentExtractorOcrAwesome';
+import { ValidateDniImages } from './validation/validateDniImages.service';
+import { ValidateDocument } from './validation/validateDocument';
+import { validateUser } from './validation/validateUser';
 
 @Controller()
 export class AppController {
@@ -29,7 +33,13 @@ export class AppController {
 
   @Post('document/validate')
   validateDocumentId(@Body() body: any) {
-    const validator = new ValidateDocument();
+    const pngConverter = new AnyToPngConverter();
+    const contentExtractor = new DocumentIdContentExtractorOcrAwesome(
+      pngConverter,
+    );
+    const dniAnalyzer = new DniAnalyzerLib(pngConverter, contentExtractor);
+    const validateDniImages = new ValidateDniImages(dniAnalyzer);
+    const validator = new ValidateDocument(pngConverter, validateDniImages);
     try {
       validator.validate(body);
       this.safelyStoreNewDocument(body);

@@ -1,29 +1,21 @@
 import { AnyToPngConverter } from './AnyToPngConverter';
-import { OcrAwesomeLib } from './OcrAwesomeLib';
 
 export class DniAnalyzerLib {
-  private static FRONT_DNI_PATTERN = 'some-base-DNI-image-in-base-64';
-  private static BACK_DNI_PATTERN = 'some-base-DNI-image-in-base-64';
+  public static FRONT_DNI_PATTERN = 'some-base-DNI-image-in-base-64';
+  public static BACK_DNI_PATTERN = 'some-base-DNI-image-in-base-64';
 
   private pngConverter: AnyToPngConverter;
-  private ocrHelper: OcrAwesomeLib;
+  //private ocrHelper: OcrAwesomeLib;
+  private contentExtractor: DocumentIdContentExtractor;
 
-  constructor() {
-    this.pngConverter = new AnyToPngConverter();
-    this.ocrHelper = new OcrAwesomeLib();
+  constructor(pngConverter: AnyToPngConverter, contentExtractor: DocumentIdContentExtractor) {
+    this.pngConverter = pngConverter;
+    //this.ocrHelper = new OcrAwesomeLib();
+    this.contentExtractor = contentExtractor;
   }
 
   public extractContentFromDNI(front: string, back: string): any {
-    // retorna el contenido del DNI después de pasarle un OCR
-    const frontAsPng = this.pngConverter.convert(front);
-    return this.ocrHelper.extractText(
-      frontAsPng,
-      17.12,
-      33,
-      true,
-      true,
-      DniAnalyzerLib.FRONT_DNI_PATTERN,
-    );
+    return this.contentExtractor.extractContentFromDocumentImages(front, back);
   }
 
   public validateDNI(front: string, back: string): number {

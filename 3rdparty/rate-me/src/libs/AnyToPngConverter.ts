@@ -11,6 +11,10 @@ export class AnyToPngConverter {
     }
   }
 
+  protected validateLicence(): void {
+    this.checkLicence();
+  }
+
   public static getInstance() {
     if (!this.instance) {
       this.instance = new AnyToPngConverter();
@@ -19,14 +23,17 @@ export class AnyToPngConverter {
   }
 
   public convert(imageInBase64: string): string {
-    this.checkLicence();
+    this.validateLicence();
     // there should be some complex image manipulation here
     return imageInBase64;
   }
 
   public matchPct(knownImage: string, comparedImage: string): number {
-    this.checkLicence();
+    this.validateLicence();
     // there should be some comple image comparison here
+    if(comparedImage === 'fake-image'){
+      return 10;
+    }
     return 70;
   }
 }

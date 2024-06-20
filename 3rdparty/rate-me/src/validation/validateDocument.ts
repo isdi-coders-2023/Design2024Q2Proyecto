@@ -1,61 +1,52 @@
+import { isValidDocumentDto } from '../types/types.guards';
+import { AnyToPngConverter } from '../libs/AnyToPngConverter';
 import { DniAnalyzerLib } from '../libs/DniAnalyzerLib';
+import { ValidateDniImages } from './validateDniImages.service';
+import { DocumentIdContentExtractorChained } from './infrastructure/DocumentIdContentExtractorChained';
+import { CrazyDniNie } from '../libs/CrazyDniNie';
+import { DocumentIdContentExtractorOcrAwesome } from './infrastructure/DocumentIdContentExtractorOcrAwesome';
 
 export class ValidateDocument {
   private dniAnalyzer: DniAnalyzerLib;
-  constructor() {
-    this.dniAnalyzer = new DniAnalyzerLib();
+  private _documentIdContentExtractor: DocumentIdContentExtractor;
+
+  constructor(
+    pngConverter: AnyToPngConverter,
+    private validateDniImages: ValidateDniImages,
+  ) {
+    const newLib = new CrazyDniNie();
+    const lib = new DocumentIdContentExtractorOcrAwesome(pngConverter);
+
+    const documentIdContentExtractor: DocumentIdContentExtractor =
+      new DocumentIdContentExtractorChained(newLib, lib);
+
+    this._documentIdContentExtractor = documentIdContentExtractor;
+
+    this.dniAnalyzer = validateDniImages.dniAnalyzer;
   }
   //NOTE siempre recibimos las imágenes como jpeg
   public validate(data: any): void {
-    let isValid;
-    // validar que viene DNI
-    if ('dni' in data) {
-      // validar que viene nombre
-      if ('nombre' in data) {
-        // validar que viene fecha de nacimiento
-        if ('fechaNacimiento' in data) {
-          if ('apellidos' in data) {
-            isValid = true;
-          } else {
-            isValid = false;
-          }
-        } else {
-          isValid = false;
-        }
-      } else {
-        isValid = false;
-      }
-    } else {
-      isValid = false;
-    }
-    // validar que viene la imagen, front y back
-    if ((isValid && !('frontImage' in data)) || data.frontImage === '') {
-      isValid = false;
-    }
-    if ((isValid && !('backImage' in data)) || data.backImage === '') {
-      isValid = false;
-    }
-
-    if (!isValid) {
+    if (!isValidDocumentDto(data)) {
       throw new Error('Invalid data received');
     }
 
-    // usar la librería para analizar si la imagen es un DNI válido
-    const rate = this.dniAnalyzer.validateDNI(data.frontImage, data.backImage);
-    if (rate < 50) {
+    if (this.validateDniImages.areImagesFake(data.frontImage, data.backImage)) {
       throw new Error('Las imágenes parecen falsas');
     }
+
     // usar la librería para extraer datos del DNI
-    const dataExtracted = this.dniAnalyzer.extractContentFromDNI(
-      data.frontImage,
-      data.backImage,
-    );
+    const dataExtracted =
+      this._documentIdContentExtractor.extractContentFromDocumentImages(
+        data.frontImage,
+        data.backImage,
+      );
+
     // comparar los datos de la librería con los que recibimos
-    if (data.nombre === dataExtracted.nombre) {
-      if (data.apellidos === dataExtracted.apellidos) {
-        if (data.dni === dataExtracted.dni) {
+    if (data.name === dataExtracted.nombre) {
+      if (data.surname === dataExtracted.apellidos) {
+        if (data.documentId === dataExtracted.dni) {
           if (
-            data.fechaDeNacimiento ===
+            data.birthday ===
             dataExtracted.fechaDeNacimiento.replaceAll(' ', '-')
           ) {
             return;
@@ -63,6 +54,7 @@ export class ValidateDocument {
         }
       }
     }
+
     throw new Error('Algún dato no casa con el DNI');
   }
 }
