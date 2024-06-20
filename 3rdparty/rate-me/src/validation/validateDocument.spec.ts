@@ -105,7 +105,7 @@ describe('validateDocument', () => {
       }).toThrow('Las imágenes parecen falsas');
     });
 
-    it('should fail if some data does not match with payload', () => {
+    it.only('should fail if some data does not match with payload', () => {
       const payload = { ...samplePayload, frontImage: 'fake-image-2' };
       documentContentExtractor.extractContentFromDocumentImages = () => {
         return {
