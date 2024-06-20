@@ -9,7 +9,7 @@ export interface DocumentData {
   dni: string;
 }
 
-export type DocuemntType = 'dni' | 'nie';
+export type DocumentType = 'dni' | 'nie';
 
 export class CrazyDniNie {
   constructor() {}
@@ -27,14 +27,15 @@ export class CrazyDniNie {
     };
   }
 
-  public inferDocumentType(frontImage: string): DocuemntType {
+  public inferDocumentType(frontImage: string): DocumentType | null {
+    // código que decide si es dni o nie
     return 'dni';
   }
 
   public fakeProbability(
     frontImage: string,
     backImage: string,
-    documentType: DocuemntType,
+    documentType: DocumentType,
   ) {
     switch (documentType) {
       case 'dni':

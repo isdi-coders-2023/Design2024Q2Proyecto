@@ -1,5 +1,5 @@
-import { DniAnalyzerLib } from '../libs/DniAnalyzerLib';
 import { AnyToPngConverterTesteable } from '../libs/AnyToPngConverterTesteable';
+import { DniAnalyzerLib } from '../libs/DniAnalyzerLib';
 import { ValidateDniImages } from './validateDniImages.service';
 import { ValidateDocument } from './validateDocument';
 
@@ -13,18 +13,35 @@ const samplePayload = {
 };
 
 const pngConverter = new AnyToPngConverterTesteable();
-const dniAnalyzer = new DniAnalyzerLib(pngConverter);
-const validateDniImages = new ValidateDniImages(dniAnalyzer);
+let documentContentExtractor: DocumentIdContentExtractor;
+let dniAnalyzer;
+let validateDniImages;
 
-const sut: ValidateDocument = new ValidateDocument(
-  pngConverter,
-  validateDniImages,
-);
+let sut: ValidateDocument;
 
 describe('validateDocument', () => {
+  beforeEach(() => {
+    documentContentExtractor = {
+      extractContentFromDocumentImages: jest.fn(),
+    };
+    dniAnalyzer = new DniAnalyzerLib(pngConverter, documentContentExtractor);
+    validateDniImages = new ValidateDniImages(dniAnalyzer);
+
+    sut = new ValidateDocument(pngConverter, validateDniImages);
+  });
+
   describe('when validating post data', () => {
     it('should validate document', () => {
       const payload = { ...samplePayload };
+      documentContentExtractor.extractContentFromDocumentImages = () => {
+        return {
+          nombre: samplePayload.name,
+          apellidos: samplePayload.surname,
+          dni: samplePayload.documentId,
+          fechaDeNacimiento: samplePayload.birthday,
+        };
+      };
+
       sut.validate(payload);
     });
 
@@ -90,7 +107,14 @@ describe('validateDocument', () => {
 
     it('should fail if some data does not match with payload', () => {
       const payload = { ...samplePayload, frontImage: 'fake-image-2' };
-
+      documentContentExtractor.extractContentFromDocumentImages = () => {
+        return {
+          nombre: 'el-nombre-es-diferente',
+          apellidos: samplePayload.surname,
+          dni: samplePayload.documentId,
+          fechaDeNacimiento: samplePayload.birthday,
+        };
+      };
       expect(() => {
         sut.validate(payload);
       }).toThrow('Algún dato no casa con el DNI');

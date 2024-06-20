@@ -2,12 +2,15 @@ import { isValidDocumentDto } from '../types/types.guards';
 import { AnyToPngConverter } from '../libs/AnyToPngConverter';
 import { DniAnalyzerLib } from '../libs/DniAnalyzerLib';
 import { ValidateDniImages } from './validateDniImages.service';
+import { DocumentIdContentExtractorOcrAwesome } from './infrastructure/DocumentIdContentExtractorOcrAwesome';
 
 export class ValidateDocument {
   private dniAnalyzer: DniAnalyzerLib;
 
   constructor(pngConverter: AnyToPngConverter, private validateDniImages: ValidateDniImages) {
-    this.dniAnalyzer = new DniAnalyzerLib(pngConverter);
+    const documentIdContentExtractor: DocumentIdContentExtractor = 
+      new DocumentIdContentExtractorOcrAwesome(pngConverter);
+    this.dniAnalyzer = validateDniImages.dniAnalyzer;
   }
   //NOTE siempre recibimos las imágenes como jpeg
   public validate(data: any): void {
